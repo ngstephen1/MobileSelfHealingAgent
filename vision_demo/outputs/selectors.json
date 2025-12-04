@@ -1,0 +1,45 @@
+{
+  "screen.home": {
+    "testTag": "screen.home"
+  },
+  "search.bar": {
+    "testTag": "home.search.bar",
+    "labelHint": "Where can we take you?",
+    "type": "control"
+  },
+  "cta.discover": {
+    "testTag": "home.cta.discover",
+    "labelHint": "Discover More \u2192",
+    "type": "cta"
+  },
+  "tab.home": {
+    "testTag": "home.tab.home",
+    "labelHint": "Home",
+    "type": "tab"
+  },
+  "tab.book": {
+    "testTag": "home.tab.book",
+    "labelHint": "Book",
+    "type": "tab"
+  },
+  "tab.trips": {
+    "testTag": "home.tab.trips",
+    "labelHint": "Trips",
+    "type": "tab"
+  },
+  "tab.wishlists": {
+    "testTag": "home.tab.wishlists",
+    "labelHint": "Wishlists",
+    "type": "tab"
+  },
+  "tab.account": {
+    "testTag": "home.tab.account",
+    "labelHint": "Account",
+    "type": "tab"
+  },
+  "strip.recentlyViewed": {
+    "testTag": "home.strip.recentlyViewed",
+    "labelHint": "RECENTLY VIEWED",
+    "type": "dynamic"
+  }
+}
