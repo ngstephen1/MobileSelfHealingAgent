@@ -1,0 +1,26 @@
+{
+  "image": "assets/bonvoy.png",
+  "notes": "All boxes are normalized [x, y, w, h] in 0..1 relative to image size.",
+  "rois": [
+    { "key": "screen.home", "type": "screen", "label": "Home Screen", "box": [0.0, 0.0, 1.0, 1.0] },
+
+    { "key": "search.bar", "type": "control", "label": "Where can we take you?", "box": [0.07, 0.12, 0.86, 0.11] },
+    { "key": "cta.discover", "type": "cta", "label": "Discover More →", "box": [0.06, 0.62, 0.32, 0.035] },
+
+    { "key": "tab.home", "type": "tab", "label": "Home", "box": [0.08, 0.93, 0.12, 0.055] },
+    { "key": "tab.book", "type": "tab", "label": "Book", "box": [0.28, 0.93, 0.12, 0.055] },
+    { "key": "tab.trips", "type": "tab", "label": "Trips", "box": [0.48, 0.93, 0.12, 0.055] },
+    { "key": "tab.wishlists", "type": "tab", "label": "Wishlists", "box": [0.68, 0.93, 0.12, 0.055] },
+    { "key": "tab.account", "type": "tab", "label": "Account", "box": [0.86, 0.93, 0.12, 0.055] },
+
+    { "key": "strip.recentlyViewed", "type": "dynamic", "label": "RECENTLY VIEWED", "box": [0.05, 0.78, 0.9, 0.06] }
+  ],
+  "masks": [
+    { "key": "dynamic.promoCard", "box": [0.05, 0.66, 0.9, 0.11], "reason": "dynamic content" },
+    { "key": "dynamic.recentCarousel", "box": [0.05, 0.84, 0.9, 0.07], "reason": "carousel" }
+  ],
+  "testTagConvention": {
+    "prefix": "home.",
+    "replace": { "tab.": "tab.", "search.bar": "search.bar" }
+  }
+}
