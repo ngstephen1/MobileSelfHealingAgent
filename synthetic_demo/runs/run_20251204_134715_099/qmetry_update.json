@@ -3,7 +3,7 @@
   "status": "passed",
   "evidence": {
     "browserstack": {
-      "build_id": "bs-1764878861",
+      "build_id": "bs-1764998746",
       "device": "Google Pixel 7 Pro",
       "os": "Android 14",
       "suite": "Synthetic::ModifyRoom",

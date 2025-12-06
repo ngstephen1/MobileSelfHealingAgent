@@ -1,93 +1,108 @@
 #!/usr/bin/env python3
-import os, re, json, glob, subprocess
-from math import exp
+"""
+Collect per-run healing metrics into runs/history.csv.
+
+Behavior:
+- Scans synthetic_demo/runs/run_* (works locally and on Streamlit Cloud).
+- Prefers structured metrics from heal_result.json (if present).
+- Falls back to parsing heal_report.md for older runs.
+- Writes a stable CSV with columns:
+    run, failing_key, chosen_key, confidence, android_tag, ios_id, ts
+"""
+
+import csv
+import json
+import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-CAT  = ROOT / "config" / "selector_catalog.json"
+ROOT = Path(__file__).resolve().parents[1]        # .../synthetic_demo
+RUNS = ROOT / "runs"
+HIST = RUNS / "history.csv"
 
-# Direct aliases for known UI renames (expand as you discover more)
-ALIASES = {
-  "btn.viewRates": ["btn.viewPrices"]
-}
 
-def parse_tags(sem_path):
-    txt = Path(sem_path).read_text(encoding="utf-8", errors="ignore")
-    tags = re.findall(r"TestTag\s*=\s*'([^']+)'", txt)
-    return set(tags), txt
+def read_json(p: Path) -> dict:
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
-def lev(a,b):
-    a,b=a.lower(),b.lower()
-    dp=list(range(len(b)+1))
-    for i,ca in enumerate(a,1):
-        prev=dp[0]; dp[0]=i
-        for j,cb in enumerate(b,1):
-            cur=dp[j]; dp[j]=min(dp[j]+1, dp[j-1]+1, prev+(0 if ca==cb else 1)); prev=cur
-    return dp[-1]
 
-def clickable_boost(tag, txt):
-    # crude: look for the tag on a line that mentions clickable=true
-    pat = rf"{re.escape(tag)}.*clickable\s*=\s*true"
-    return 1.0 if re.search(pat, txt, re.I|re.S) else 0.7
+def parse_heal_report(p: Path):
+    """Fallback for older runs without heal_result.json.
+    Returns (chosen_key, confidence, android_tag, ios_id).
+    Expected line in markdown:
+        - Proposed: `testTag=btn.viewPrices` (source=semantic, confidence=0.93)
+    """
+    chosen_key = ""
+    confidence = ""
+    android_tag = ""
+    ios_id = ""
 
-def conf(tag, key, txt):
-    sim     = 1/(1+lev(tag,key))
-    in_ctx  = 1.0 if ("screen.searchResults" in txt or "screen.home" in txt) else 0.7
-    click   = clickable_boost(tag, txt)
-    raw = 0.55*sim + 0.25*in_ctx + 0.20*click
-    # logistic squashing
-    return 1/(1+exp(-6*(raw-0.5)))
+    if not p.exists():
+        return chosen_key, confidence, android_tag, ios_id
 
-def visual_fallback(key):
-    vc = ROOT.parent / "vision_demo" / "tools" / "visual_heal.py"
-    if not vc.exists(): return None, 0.0, "visual tool missing"
-    r = subprocess.run(["python3", str(vc), key], capture_output=True, text=True)
-    m = re.search(r"testTag=([A-Za-z0-9\.\-_]+).*confidence\s+([0-9.]+)", r.stdout)
-    if not m: return None, 0.0, "visual parse fail"
-    return m.group(1), float(m.group(2)), "visual"
+    txt = p.read_text(encoding="utf-8", errors="ignore")
+
+    m_tag = re.search(r"Proposed:\s*`testTag=([A-Za-z0-9._\-]+)`", txt)
+    if m_tag:
+        android_tag = m_tag.group(1)
+        ios_id = android_tag  # synthetic demo mirrors Android
+
+    m_src = re.search(r"source\s*=\s*([A-Za-z0-9_\-]+)", txt)
+    if m_src:
+        chosen_key = m_src.group(1)
+
+    m_conf = re.search(r"confidence\s*=\s*([0-9]*\.?[0-9]+)", txt)
+    if m_conf:
+        confidence = m_conf.group(1)
+
+    return chosen_key, confidence, android_tag, ios_id
+
+
+def main():
+    rows = []
+
+    run_dirs = sorted([p for p in RUNS.glob("run_*") if p.is_dir()])
+    if not run_dirs:
+        print("No runs found. Generate one with simulate_run.py")
+
+    for run_dir in run_dirs:
+        bundle = read_json(run_dir / "bundle.json")
+        failing_key = bundle.get("failing_label") or bundle.get("failing_key") or ""
+
+        # Prefer structured JSON
+        hrj = read_json(run_dir / "heal_result.json")
+        if hrj:
+            chosen_key  = hrj.get("chosen_key", "")
+            confidence  = hrj.get("confidence", "")
+            android_tag = (hrj.get("android") or {}).get("testTag", "")
+            ios_id      = (hrj.get("ios") or {}).get("accessibilityId", "")
+            ts_val      = hrj.get("ts", "")
+        else:
+            chosen_key, confidence, android_tag, ios_id = parse_heal_report(run_dir / "heal_report.md")
+            ts_val = ""
+
+        rows.append({
+            "run": run_dir.name,
+            "failing_key": failing_key,
+            "chosen_key": chosen_key,
+            "confidence": confidence,
+            "android_tag": android_tag,
+            "ios_id": ios_id,
+            "ts": ts_val,
+        })
+
+    # Write CSV
+    HIST.parent.mkdir(parents=True, exist_ok=True)
+    fields = ["run", "failing_key", "chosen_key", "confidence", "android_tag", "ios_id", "ts"]
+    with HIST.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        for r in rows:
+            w.writerow(r)
+
+    print(f"Wrote {HIST} with {len(rows)} rows")
+
 
 if __name__ == "__main__":
-    bundles = sorted(glob.glob(str(ROOT / "runs" / "run_*" / "bundle.json")), key=os.path.getmtime)
-    if not bundles: raise SystemExit("No bundles found. Run simulate_run.py to create one.")
-    bundle_path = bundles[-1]
-    b = json.loads(Path(bundle_path).read_text())
-    key = b.get("failing_label","unknown")
-    sem = b["artifacts"]["semantics"]
-
-    # 1) Semantic candidates
-    tags, txt = parse_tags(sem)
-    pick, score, mode = None, 0.0, "semantic"
-    if tags:
-        # alias fast-path
-        for alias in ALIASES.get(key, []):
-            if alias in tags:
-                pick, score = alias, 0.93
-                break
-        if not pick:
-            ranked = sorted([(t, conf(t,key,txt)) for t in tags], key=lambda x: x[1], reverse=True)
-            pick, score = ranked[0]
-
-    # 2) If weak, try vision fallback
-    SEMANTIC_THRESHOLD = 0.55   # was 0.70; friendlier for small renames
-    if not pick or score < SEMANTIC_THRESHOLD:
-        vtag, vconf, vmode = visual_fallback(key)
-        if vtag and vconf > score:
-            pick, score, mode = vtag, vconf, vmode
-
-    if not pick:
-        raise SystemExit("No candidate selector found; manual review needed.")
-
-    # 3) Patch catalog
-    cat = json.loads(CAT.read_text())
-    cat[key] = {"testTag": pick}
-    CAT.write_text(json.dumps(cat, indent=2))
-
-    # 4) Report into the same run folder
-    report = Path(bundle_path).parent / "heal_report.md"
-    report.write_text(
-        "# Self-Heal Patch\n\n"
-        f"- Failing key: `{key}`\n"
-        f"- Proposed: `testTag={pick}` (source={mode}, confidence={score:.2f})\n"
-        f"- Updated: synthetic_demo/config/selector_catalog.json\n"
-    )
-    print(f"Healed {key} -> {pick} (mode={mode}, conf={score:.2f})")
+    main()

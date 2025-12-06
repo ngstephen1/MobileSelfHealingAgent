@@ -28,20 +28,37 @@ def write_bundle(msg):
     ts = time.strftime("%Y%m%d_%H%M%S")
     out = RUNS / f"run_{ts}"
     out.mkdir(parents=True, exist_ok=True)
+
+    # Copy artifacts for this synthetic run
     shutil.copyfile(SEM, out / "semantics.txt")
     shutil.copyfile(UIA, out / "uiauto.xml")
-    (out / "screenshot.txt").write_text("<<synthetic screenshot>>")
+    (out / "screenshot.txt").write_text("<<synthetic screenshot>>", encoding="utf-8")
+
+    # IMPORTANT: keep artifact paths relative to the run folder so the demo
+    # works both locally and in cloud containers.
     bundle = {
-      "test":"Synthetic::ModifyRoom",
-      "failing_label": FAILING_KEY,
-      "message": msg,
-      "artifacts":{
-        "semantics": str(out / "semantics.txt"),
-        "uiauto":    str(out / "uiauto.xml"),
-        "screenshot":str(out / "screenshot.txt")
-      }
+        "test": "Synthetic::ModifyRoom",
+        "failing_label": FAILING_KEY,
+        "message": msg,
+        "run": out.name,  # convenience for dashboards
+        "artifacts": {
+            "semantics": "semantics.txt",
+            "uiauto": "uiauto.xml",
+            "screenshot": "screenshot.txt"
+        }
     }
-    (out / "bundle.json").write_text(json.dumps(bundle, indent=2))
+
+    (out / "bundle.json").write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+
+    # Maintain a helpful "latest" pointer (best-effort; ignore if fails)
+    try:
+        latest = RUNS / "latest"
+        if latest.exists() or latest.is_symlink():
+            latest.unlink()
+        latest.symlink_to(out.name)
+    except Exception:
+        pass
+
     print("Bundle written:", out)
     return out
 

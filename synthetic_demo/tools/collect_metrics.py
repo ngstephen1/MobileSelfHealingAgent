@@ -1,35 +1,88 @@
 #!/usr/bin/env python3
-import csv, json, glob
+"""
+Collects per-run healing metrics into runs/history.csv.
+- Works with new run-relative artifact layout.
+- Tolerates old absolute paths in bundle.json.
+- Extracts chosen strategy (semantic/visual/...) and confidence from heal_report.md.
+- Falls back cleanly if a heal hasn't been performed yet.
+"""
+
+import csv, json, re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-HIST = ROOT / "runs" / "history.csv"
+ROOT = Path(__file__).resolve().parents[1]        # .../synthetic_demo
+RUNS = ROOT / "runs"
+HIST = RUNS / "history.csv"
+
+
+def read_json(p: Path) -> dict:
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def parse_heal_report(p: Path):
+    """Return (chosen_key, confidence, android_tag, ios_id) from heal_report.md.
+    Expected line (from heal.py):
+      - Proposed: `testTag=btn.viewPrices` (source=semantic, confidence=0.93)
+    """
+    chosen_key = ""
+    confidence = ""
+    android_tag = ""
+    ios_id = ""
+
+    if not p.exists():
+        return chosen_key, confidence, android_tag, ios_id
+
+    txt = p.read_text(encoding="utf-8", errors="ignore")
+
+    # Extract proposed testTag (android)
+    m_tag = re.search(r"Proposed:\s*`testTag=([A-Za-z0-9._\-]+)`", txt)
+    if m_tag:
+        android_tag = m_tag.group(1)
+        ios_id = android_tag  # synthetic demo mirrors id across platforms
+
+    # Extract source and confidence
+    m_src = re.search(r"source\s*=\s*([A-Za-z0-9_\-]+)", txt)
+    if m_src:
+        chosen_key = m_src.group(1)
+    m_conf = re.search(r"confidence\s*=\s*([0-9]*\.?[0-9]+)", txt)
+    if m_conf:
+        confidence = m_conf.group(1)
+
+    return chosen_key, confidence, android_tag, ios_id
+
 
 def main():
     rows = []
-    for bpath in glob.glob(str(ROOT/"runs"/"run_*"/"bundle.json")):
-        run = Path(bpath).parent
-        hr = run/"heal_report.md"
-        status = "unknown"
-        chosen = ""
-        confidence = ""
-        if hr.exists():
-            txt = hr.read_text()
-            # naive parse
-            for line in txt.splitlines():
-                if line.startswith("- Chosen:"):
-                    chosen = line.split("`")[1]
-                if "conf=" in line:
-                    m = line.split("conf=")[-1].split()[0]
-                    confidence = m.strip().strip(")")[:6]
-        rows.append([run.name, json.loads(Path(bpath).read_text()).get("failing_label"), chosen, confidence])
+    runs = sorted([p for p in RUNS.glob("run_*") if p.is_dir()])
+    for run_dir in runs:
+        bundle = read_json(run_dir / "bundle.json")
+        failing_key = bundle.get("failing_label") or bundle.get("failing_key") or ""
 
+        chosen_key, confidence, android_tag, ios_id = parse_heal_report(run_dir / "heal_report.md")
+
+        rows.append({
+            "run": run_dir.name,
+            "failing_key": failing_key,
+            "chosen_key": chosen_key,
+            "confidence": confidence,
+            "android_tag": android_tag,
+            "ios_id": ios_id,
+        })
+
+    # Write CSV with stable header
     HIST.parent.mkdir(parents=True, exist_ok=True)
+    fields = ["run", "failing_key", "chosen_key", "confidence", "android_tag", "ios_id"]
     with HIST.open("w", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["run","failing_key","chosen_key","confidence"])
-        w.writerows(rows)
-    print("Wrote", HIST)
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        for r in rows:
+            w.writerow(r)
+
+    print(f"Wrote {HIST} with {len(rows)} rows")
+
 
 if __name__ == "__main__":
     main()
