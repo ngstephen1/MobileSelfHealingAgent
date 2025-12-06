@@ -13,10 +13,6 @@ _Catch regressions fast, stabilize selectors automatically, and draft BDD from J
 
 <!-- TECH BADGES -->
 <br/>
-<img src="https://img.shields.io/badge/JSON-000?logo=json&logoColor=white&labelColor=000" alt="json">
-<img src="https://img.shields.io/badge/Markdown-000?logo=markdown&logoColor=white&labelColor=000" alt="md">
-<img src="https://img.shields.io/badge/Streamlit-ff4b4b?logo=streamlit&logoColor=white" alt="streamlit">
-<img src="https://img.shields.io/badge/Jupyter-f37626?logo=jupyter&logoColor=white" alt="jupyter">
 <img src="https://img.shields.io/badge/iOS-000000?logo=apple&logoColor=white" alt="iOS">
 <img src="https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white" alt="Android">
 <img src="https://img.shields.io/badge/Swift-F05138?logo=swift&logoColor=white" alt="Swift">
@@ -25,6 +21,10 @@ _Catch regressions fast, stabilize selectors automatically, and draft BDD from J
 <img src="https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white" alt="numpy">
 <img src="https://img.shields.io/badge/Python-3776ab?logo=python&logoColor=white" alt="python">
 <img src="https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white" alt="pandas">
+<img src="https://img.shields.io/badge/JSON-000?logo=json&logoColor=white&labelColor=000" alt="json">
+<img src="https://img.shields.io/badge/Markdown-000?logo=markdown&logoColor=white&labelColor=000" alt="md">
+<img src="https://img.shields.io/badge/Streamlit-ff4b4b?logo=streamlit&logoColor=white" alt="streamlit">
+<img src="https://img.shields.io/badge/Jupyter-f37626?logo=jupyter&logoColor=white" alt="jupyter">
 
 </div>
 
