@@ -1,0 +1,14 @@
+# Canonical, reusable step patterns (synthetic)
+phrases:
+  - 'user verify "<page>" page'
+  - 'user navigates to "<page>" page'
+  - 'user clicks on "<button>" button'
+  - 'user taps on "<button>" button'
+  - 'user selects "<option>" option'
+  - 'user selects "<rateType>" rate'
+  - 'user sees "<modal>" modal'
+  - 'booking is completed'
+  - 'reservation confirmation screen shows "<field>" equals "<value>"'
+  - 'user signs in as "<userKey>"'
+  - 'user enables feature flag "<flagKey>"'
+  - 'user opens "<tab>" tab'

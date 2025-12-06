@@ -1,0 +1,42 @@
+{
+  "btn.viewRates": {
+    "android": {
+      "testTag": "btn.viewRates"
+    },
+    "ios": {
+      "accessibilityId": "btn.viewRates"
+    }
+  },
+  "btn.viewPrices": {
+    "android": {
+      "testTag": "btn.viewPrices"
+    },
+    "ios": {
+      "accessibilityId": "btn.viewPrices"
+    }
+  },
+  "tab.trips": {
+    "android": {
+      "testTag": "home.tab.trips"
+    },
+    "ios": {
+      "accessibilityId": "tab.trips"
+    }
+  },
+  "stay.modify.link": {
+    "android": {
+      "testTag": "stay.modify"
+    },
+    "ios": {
+      "accessibilityId": "stay.modify"
+    }
+  },
+  "btn.bookNow": {
+    "android": {
+      "testTag": "btn.reserveNow"
+    },
+    "ios": {
+      "accessibilityId": "btn.reserveNow"
+    }
+  }
+}

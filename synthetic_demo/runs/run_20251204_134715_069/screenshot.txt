@@ -1,0 +1,1 @@
+[device=Google Pixel 7 Pro][locale=de_DE]

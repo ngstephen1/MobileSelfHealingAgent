@@ -1,0 +1,11 @@
+{
+  "screen": "searchResults",
+  "elements": [
+    {
+      "role": "button",
+      "label": "View Rates",
+      "accessibilityId": "tab.myTrips",
+      "enabled": true
+    }
+  ]
+}

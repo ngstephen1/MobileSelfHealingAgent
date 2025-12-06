@@ -1,0 +1,7 @@
+{
+  "screen": "searchResults",
+  "elements": [
+    { "role": "button", "label": "View Prices", "accessibilityId": "btn.viewPrices", "enabled": true },
+    { "role": "tab", "label": "Trips", "accessibilityId": "tab.trips", "selected": false }
+  ]
+}

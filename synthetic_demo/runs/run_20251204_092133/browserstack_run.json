@@ -1,0 +1,9 @@
+{
+  "build_id": "bs-1764862616",
+  "device": "Google Pixel 7 Pro",
+  "os": "Android 14",
+  "suite": "Synthetic::ModifyRoom",
+  "status": "passed",
+  "video_url": "https://browserstack.example/video.mp4",
+  "logs_url": "https://browserstack.example/logs.txt"
+}

@@ -1,0 +1,44 @@
+{
+  "screen.home": {
+    "testTag": "screen.home"
+  },
+  "tab.trips": {
+    "testTag": "home.tab.trips"
+  },
+  "stay.modify.link": {
+    "testTag": "stay.modify"
+  },
+  "modal.modify": {
+    "testTag": "modal.modifyReservation"
+  },
+  "btn.continue": {
+    "testTag": "btn.continue"
+  },
+  "screen.roomList": {
+    "testTag": "screen.roomList"
+  },
+  "opt.viewRate": {
+    "testTag": "opt.viewRate"
+  },
+  "screen.rateType": {
+    "testTag": "screen.rateType"
+  },
+  "rate.any": {
+    "testTag": "rate.any"
+  },
+  "screen.confirm": {
+    "testTag": "screen.confirm"
+  },
+  "btn.bookNow": {
+    "testTag": "home.tab.account"
+  },
+  "screen.confirmation": {
+    "testTag": "screen.confirmation"
+  },
+  "screen.searchResults": {
+    "testTag": "screen.searchResults"
+  },
+  "btn.viewRates": {
+    "testTag": "btn.viewPrices"
+  }
+}

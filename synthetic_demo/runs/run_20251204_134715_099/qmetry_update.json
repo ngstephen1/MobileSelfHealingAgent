@@ -1,0 +1,17 @@
+{
+  "testKey": "MBL-TEST-4242",
+  "status": "passed",
+  "evidence": {
+    "browserstack": {
+      "build_id": "bs-1764878861",
+      "device": "Google Pixel 7 Pro",
+      "os": "Android 14",
+      "suite": "Synthetic::ModifyRoom",
+      "status": "passed",
+      "video_url": "https://browserstack.example/video.mp4",
+      "logs_url": "https://browserstack.example/logs.txt"
+    },
+    "healReport": "# Self-Heal Patch\n\n- Failing key: `btn.bookNow`\n- Proposed: `testTag=home.tab.account` (source=visual, confidence=0.65)\n- Updated: synthetic_demo/config/selector_catalog.json\n"
+  },
+  "comment": "Synthetic update: linked BrowserStack run & self-heal report."
+}

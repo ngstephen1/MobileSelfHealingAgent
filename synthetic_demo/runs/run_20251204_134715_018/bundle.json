@@ -1,0 +1,10 @@
+{
+  "test": "Synthetic::ModifyRoom",
+  "failing_label": "btn.bookNow",
+  "message": "Missing tag in semantics for key=btn.bookNow, testTag=btn.reserveNow",
+  "artifacts": {
+    "semantics": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_018/semantics.txt",
+    "uiauto": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_018/uiauto.xml",
+    "screenshot": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_018/screenshot.txt"
+  }
+}

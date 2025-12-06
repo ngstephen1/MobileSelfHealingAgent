@@ -1,0 +1,10 @@
+{
+  "test": "DemoTest::test_view_rates_button",
+  "failing_label": "btn.viewRates",
+  "message": "Selector not found (key=btn.viewRates, testTag=btn.viewRates, text=None)",
+  "artifacts": {
+    "semantics": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/selfheal_demo/reports/run_20251204_090002/semantics.txt",
+    "uiauto": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/selfheal_demo/reports/run_20251204_090002/uiauto.xml",
+    "screenshot": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/selfheal_demo/reports/run_20251204_090002/screenshot.txt"
+  }
+}

@@ -1,0 +1,3 @@
+Root
+  Node: Screen TestTag='screen.searchResults'
+  Node: Button Text='View Rates' TestTag='home.tab.trips' ContentDesc='View current view rates' clickable=true visible=true

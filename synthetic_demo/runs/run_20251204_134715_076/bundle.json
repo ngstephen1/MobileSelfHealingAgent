@@ -1,0 +1,10 @@
+{
+  "test": "Synthetic::ModifyRoom",
+  "failing_label": "btn.viewRates",
+  "message": "Missing tag in semantics for key=btn.viewRates, testTag=btn.viewRate",
+  "artifacts": {
+    "semantics": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_076/semantics.txt",
+    "uiauto": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_076/uiauto.xml",
+    "screenshot": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_076/screenshot.txt"
+  }
+}

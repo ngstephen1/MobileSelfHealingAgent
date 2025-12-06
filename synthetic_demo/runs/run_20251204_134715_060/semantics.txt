@@ -1,0 +1,3 @@
+Root
+  Node: Screen TestTag='screen.searchResults'
+  Node: Button Text='View Prices' TestTag='btn.pricesNow' ContentDesc='View current view prices' clickable=true visible=true

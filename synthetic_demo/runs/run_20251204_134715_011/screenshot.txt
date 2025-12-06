@@ -1,0 +1,1 @@
+[device=iPhone 15 Pro][locale=de_DE]

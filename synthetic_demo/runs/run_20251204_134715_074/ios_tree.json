@@ -1,0 +1,11 @@
+{
+  "screen": "searchResults",
+  "elements": [
+    {
+      "role": "button",
+      "label": "View Prices",
+      "accessibilityId": "btn.pricesNow",
+      "enabled": true
+    }
+  ]
+}

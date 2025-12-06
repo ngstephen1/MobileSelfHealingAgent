@@ -1,4 +1,8 @@
 {
-  "btn.viewRates": { "testTag": "btn.viewRates" },
-  "screen.searchResults": { "testTag": "screen.searchResults" }
+  "btn.viewRates": {
+    "testTag": "btn.viewPrices"
+  },
+  "screen.searchResults": {
+    "testTag": "screen.searchResults"
+  }
 }

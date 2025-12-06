@@ -1,0 +1,10 @@
+{
+  "test": "Synthetic::ModifyRoom",
+  "failing_label": "tab.trips",
+  "message": "Missing tag in semantics for key=tab.trips, testTag=home.tab.trips",
+  "artifacts": {
+    "semantics": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_083/semantics.txt",
+    "uiauto": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_083/uiauto.xml",
+    "screenshot": "/Users/macbook/Desktop/FPTAI/MobileSelfHealingAgent/synthetic_demo/runs/run_20251204_134715_083/screenshot.txt"
+  }
+}

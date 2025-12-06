@@ -1,0 +1,2 @@
+[t=0.43] Find: Button(label='View Prices', identifier='btn.viewPrices')
+[t=0.48] Tap: btn.viewPrices
