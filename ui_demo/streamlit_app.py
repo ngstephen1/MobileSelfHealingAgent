@@ -306,7 +306,7 @@ def risk_matrix_from_change(change_hint: str, locales=None, devices=None) -> str
 
 # ---------- UI ----------
 st.set_page_config(page_title="Bonvoy Self-Healing QE Demo", layout="wide")
-st.title("🏨 Bonvoy Self-Healing QE Demo (Synthetic) + 🤝 Gemini 2.5 QA Copilot")
+st.title("🏨 Bonvoy Self-Healing Test Agent + Copilot")
 st.caption("Workflow • Metrics • Chatbot — Self-healing selectors, BDD authoring from Jira, risk matrices, and artifact Q&A")
 
 # ----- Top Navigation (always visible; no dropdown) -----
